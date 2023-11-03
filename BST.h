@@ -80,18 +80,10 @@ public:
 	// Modify the erase function to inform the user about deletion.
 	void erase(T _value) {
 		// check if the value exists in the tree.
-#ifdef _DEBUG
-		bool found = is_contain(this->root, _value);
-		if (found) {
-			this->root = erase_recursive(this->root, _value);
-			std::cout << _value << " has been removed from the tree.\n";
-		}
-		else 
-			std::cout << _value << " not found in the tree.\n";
-#else
+
         // In release mode, just perform the deletion without checks.
 		this->root = erase_recursive(this->root, _value);
-#endif
+
 	}
 
 	T minValue() const {
@@ -206,21 +198,26 @@ private:
 			}
 
 			// Case 2: Node with two children
-			Node<T>* temp = min_value_node(root->right); // find the node with smallest value in right subtree of current node
-			root->value = temp->value; // replace node with in_order successor
-			root->right = erase_recursive(root->right, temp->value);  // remove the in-order successor node from the right subtree.
+			Node<T>* temp = min_value_node(root->right);// find the node with smallest value in right subtree of current node
+				root->value = temp->value; // replace node with in_order successor
+				root->right = erase_recursive(root->right, temp->value);// remove the in-order successor node from the right subtree.
 		}
 		return root;
 	}
 
+	//Node<T>* min_value_node(Node<T>* node) {
+	//	Node<T>* current = node;
+	//	while (current->left) {
+	//		current = current->left;
+	//	}
+	//	return current;
+	//}
 	Node<T>* min_value_node(Node<T>* node) {
-		Node<T>* current = node;
-		while (current->left) {
-			current = current->left;
+		while (node->left) {
+			node = node->left;
 		}
-		return current;
+		return node;
 	}
-
 	// Function to check if a value exists in the BST.
 	bool is_contain(Node<T>* root, T _value) {
 		if (root == nullptr)

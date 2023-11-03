@@ -21,7 +21,7 @@ int main()
 	std::cout << "\n";
 
 	// 2. expect to print 1 2 3 4 5 6 7 8 9
-	std::cout << tree << "\n"; // same as tree.in_order();
+	std::cout << tree << "\n";
 
 	// 3. expect to print 1 4 3 2 7 6 9 8 5
 	tree.post_order();
@@ -31,14 +31,11 @@ int main()
 	tree.level_order();
 	std::cout << "\n";
 	
-	tree.erase(5);
-	tree.insert(10);
+	tree.erase(9);
 
-	// 5. expect to print 1 2 3 4 6 7 8 9 10
+	// 5. expect to print 1 2 3 4 6 7 8
 	std::cout << tree << "\n";
 
 	std::cout << "min value is: " << tree.minValue() << "\n";
 	std::cout << "max value is: " << tree.maxValue() << "\n";
-
-	
 }
