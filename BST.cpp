@@ -30,8 +30,8 @@ int main()
 	// 4. expect to print 5 2 8 1 3 6 9 4 7 
 	tree.level_order();
 	std::cout << "\n";
-
-	//tree.erase(5);
+	
+	tree.erase(5);
 	tree.insert(10);
 
 	// 5. expect to print 1 2 3 4 6 7 8 9 10
@@ -39,4 +39,6 @@ int main()
 
 	std::cout << "min value is: " << tree.minValue() << "\n";
 	std::cout << "max value is: " << tree.maxValue() << "\n";
+
+	
 }

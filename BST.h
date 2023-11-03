@@ -77,8 +77,21 @@ public:
 			}
 		}
 	}
+	// Modify the erase function to inform the user about deletion.
 	void erase(T _value) {
+		// check if the value exists in the tree.
+#ifdef _DEBUG
+		bool found = is_contain(this->root, _value);
+		if (found) {
+			this->root = erase_recursive(this->root, _value);
+			std::cout << _value << " has been removed from the tree.\n";
+		}
+		else 
+			std::cout << _value << " not found in the tree.\n";
+#else
+        // In release mode, just perform the deletion without checks.
 		this->root = erase_recursive(this->root, _value);
+#endif
 	}
 
 	T minValue() const {
@@ -166,15 +179,17 @@ private:
 		}
 	}
 
+	// the return node is about to change the state (which is vital here)
 	Node<T>* erase_recursive(Node<T>* root, T _value)
 	{
-		if (root == nullptr) return root;
+		if (root == nullptr) 
+			return root;
 
 		// Recursive case: first find the node to delete
 		if (_value < root->value)
-			root->left = eraseRecursive(root->left, _value);
+			root->left = erase_recursive(root->left, _value);
 		else if (_value > root->value)
-			root->right = eraseRecursive(root->right, _value);
+			root->right = erase_recursive(root->right, _value);
 		else {
 			// root->value is the value to be deleted
 
@@ -190,13 +205,33 @@ private:
 				return temp;
 			}
 
-			// Case 2: Node with two children, get the inorder successor (smallest in the right subtree)
-			Node<T>* temp = minValueNode(root->right);
-
-			root->value = temp->value;
-			root->right = eraseRecursive(root->right, temp->value);
+			// Case 2: Node with two children
+			Node<T>* temp = min_value_node(root->right); // find the node with smallest value in right subtree of current node
+			root->value = temp->value; // replace node with in_order successor
+			root->right = erase_recursive(root->right, temp->value);  // remove the in-order successor node from the right subtree.
 		}
 		return root;
+	}
+
+	Node<T>* min_value_node(Node<T>* node) {
+		Node<T>* current = node;
+		while (current->left) {
+			current = current->left;
+		}
+		return current;
+	}
+
+	// Function to check if a value exists in the BST.
+	bool is_contain(Node<T>* root, T _value) {
+		if (root == nullptr)
+			return false;
+
+		if (_value < root->value) 
+			return is_contain(root->left, _value);
+		else if (_value > root->value) 
+			return is_contain(root->right, _value);
+		else 
+			return true;
 	}
 
 private:
